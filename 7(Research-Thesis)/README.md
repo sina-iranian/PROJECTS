@@ -251,17 +251,21 @@ The original thesis experiment reported a best HHO fitness value of approximatel
 5.771075
 ```
 
-The cleaned implementation may obtain a slightly different fitness value in some executions.
+## Dataset
 
-However, these small differences do not affect the main empirical result of the study: the final **six-cluster customer segmentation structure** and the main full-data clustering evaluation metrics remain stable.
+The experiments use the publicly available:
 
-For reproducibility, the implementation explicitly defines:
+**Shopping Trends and Customer Behaviour Dataset**
 
-- Random seeds
-- Population sizes
-- Iteration counts
-- Optimization search bounds
-- Experimental configurations
+The dataset contains **3,900 customer records** and includes both numerical and categorical customer attributes.
+
+> **Note:** The dataset is not included directly in this repository.
+
+You can download the dataset from Kaggle:
+
+[Download the Shopping Trends and Customer Behaviour Dataset](https://www.kaggle.com/datasets/sahilislam007/shopping-trends-and-customer-behaviour-dataset)
+
+After downloading the dataset, update the dataset path in the notebook before running the implementation.
 
 ---
 
