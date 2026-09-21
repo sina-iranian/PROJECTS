@@ -1,12 +1,101 @@
-# Customer Segmentation with Harris Hawks Optimization and Weighted Ensemble Clustering
+# Research Thesis — Customer Segmentation Using HHO and Ensemble Clustering
 
 ## Overview
 
-This repository contains the cleaned and reproducible implementation of my thesis methodology for **customer segmentation using mixed-type e-commerce data**.
+This directory contains the complete implementation structure associated with my thesis:
 
-The project investigates how **Harris Hawks Optimization (HHO)** can be combined with multiple clustering algorithms and **weighted ensemble clustering** to identify stable and meaningful customer segments.
+> **Improving Customer Segmentation Using Harris Hawks Optimization and Ensemble Clustering**
 
-The complete methodology integrates:
+The research investigates customer segmentation on mixed-type e-commerce data using **unsupervised learning, dimensionality reduction, clustering, metaheuristic optimization, and ensemble clustering**.
+
+To keep the methodological comparison transparent, the implementation is divided into two separate components:
+
+1. **Baseline Article Replication**
+2. **Proposed Thesis Method**
+
+The baseline reproduces the reference clustering methodology used in the thesis, while the proposed method extends that framework through **Harris Hawks Optimization (HHO), multiple clustering algorithms, weighted ensemble clustering, consensus clustering, and multi-run stability analysis**.
+
+---
+
+## Repository Structure
+
+```text
+7(Research-Thesis)/
+│
+├── README.md
+│
+├── 1(Baseline-Article-Replication)/
+│   ├── README.md
+│   └── Baseline_Article_Replication_FAMD_Clustering.ipynb
+│
+└── 2(Proposed-Thesis-Method)/
+    ├── README.md
+    └── Customer_Segmentation_HHO_Ensemble.ipynb
+```
+
+---
+
+# 1. Baseline Article Replication
+
+[View the Baseline Article Replication](./1%28Baseline-Article-Replication%29/)
+
+This project contains the clean and reproducible implementation of the **baseline methodology used for comparison in the thesis**.
+
+The baseline pipeline includes:
+
+- Dataset validation and preprocessing
+- Percentile-based outlier capping
+- Eta correlation-ratio analysis
+- Factor Analysis of Mixed Data (FAMD)
+- K-Means clustering
+- Agglomerative Hierarchical Clustering
+- Silhouette Score
+- Davies-Bouldin Index
+- Calinski-Harabasz Index
+- Elbow and dendrogram diagnostics
+- Customer-segment profiling
+- FAMD dimensionality sensitivity analysis
+
+### Baseline Workflow
+
+```mermaid
+flowchart LR
+    A[Mixed Customer Data] --> B[Preprocessing]
+    B --> C[FAMD]
+    C --> D[K-Means]
+    C --> E[Agglomerative Ward]
+    D --> F[Internal Validation]
+    E --> F
+    F --> G[Customer Segments]
+```
+
+The main baseline analysis compares:
+
+```text
+k = 3
+k = 4
+```
+
+For the four-cluster baseline solution, the main internal validation results are:
+
+| Metric | Result |
+|---|---:|
+| Number of clusters | 4 |
+| Silhouette Score | 0.564877 |
+| Davies-Bouldin Index | 0.737173 |
+| Calinski-Harabasz Index | 3596.45 |
+
+The baseline implementation is maintained separately so that the original comparison framework remains clearly distinguishable from the methodological extensions introduced in the thesis.
+
+---
+
+# 2. Proposed Thesis Method
+
+[View the Proposed Thesis Method](./2%28Proposed-Thesis-Method%29/)
+
+The proposed methodology extends the baseline framework by combining **metaheuristic optimization and ensemble clustering**.
+
+The complete proposed pipeline includes:
 
 - Feature engineering and preprocessing
 - Factor Analysis of Mixed Data (FAMD)
@@ -14,209 +103,42 @@ The complete methodology integrates:
 - Agglomerative clustering
 - DBSCAN
 - Harris Hawks Optimization (HHO)
+- Clustering hyperparameter optimization
+- Quality-based partition weighting
 - Weighted ensemble clustering
 - Co-association consensus clustering
-- Multi-run stability analysis using ARI and NMI
+- Multi-run optimization
+- Adjusted Rand Index (ARI)
+- Normalized Mutual Information (NMI)
+- Stability analysis
 
----
-
-## Research Objective
-
-The main objective of this project is to improve customer segmentation by combining the complementary behavior of multiple clustering algorithms and optimizing their important parameters using **Harris Hawks Optimization**.
-
-Instead of relying on a single clustering algorithm, the proposed pipeline generates multiple optimized partitions and combines them through a **weighted co-association ensemble approach**.
-
-The final clustering structure is then evaluated in terms of both:
-
-- **Clustering quality**
-- **Stability across independent optimization runs**
-
----
-
-## Methodology
-
-The overall workflow of the project is:
+### Proposed Workflow
 
 ```mermaid
 flowchart TD
-    A[Raw Customer Data] --> B[Feature Engineering]
-    B --> C[Preprocessing]
-    C --> D[FAMD]
-    D --> E[Base Clustering Algorithms]
+    A[Mixed Customer Data] --> B[Feature Engineering and Preprocessing]
+    B --> C[FAMD]
 
-    E --> F[K-Means]
-    E --> G[Agglomerative Clustering]
-    E --> H[DBSCAN]
+    C --> D[K-Means]
+    C --> E[Agglomerative Clustering]
+    C --> F[DBSCAN]
 
-    F --> I[Harris Hawks Optimization]
-    G --> I
-    H --> I
+    D --> G[Harris Hawks Optimization]
+    E --> G
+    F --> G
 
-    I --> J[Optimized Base Partitions]
-    J --> K[Quality-Based Weighting]
-    K --> L[Weighted Co-association Matrix]
-    L --> M[Consensus Clustering]
-    M --> N[Final Customer Segments]
-    N --> O[Multi-run Stability Analysis]
+    G --> H[Optimized Base Partitions]
+    H --> I[Quality-Based Weighting]
+    I --> J[Weighted Co-Association Matrix]
+    J --> K[Consensus Clustering]
+    K --> L[Final Customer Segments]
+    L --> M[Multi-Run Stability Analysis]
+    M --> N[ARI and NMI Evaluation]
 ```
 
-The dataset contains **3,900 customer records** with both numerical and categorical attributes.
+The proposed implementation identifies a final **six-cluster customer structure**.
 
-Because the dataset contains mixed data types, **Factor Analysis of Mixed Data (FAMD)** is applied to transform the original feature space into **three latent components** before clustering.
-
----
-
-## Base Clustering Algorithms
-
-Three complementary clustering algorithms are used in the ensemble.
-
-| Algorithm | Clustering Approach |
-|---|---|
-| **K-Means** | Centroid-based clustering |
-| **Agglomerative Clustering** | Hierarchical clustering |
-| **DBSCAN** | Density-based clustering |
-
-These algorithms represent different assumptions about the underlying structure of the data.
-
-Using different clustering approaches increases the diversity of the candidate partitions used in the final ensemble.
-
----
-
-## Harris Hawks Optimization
-
-**Harris Hawks Optimization (HHO)** is used to search for suitable clustering parameters within a joint optimization space.
-
-The HHO decision vector is defined as:
-
-```text
-[k, log(eps), minPts, nAgg]
-```
-
-where:
-
-| Parameter | Description |
-|---|---|
-| `k` | Number of K-Means clusters |
-| `eps` | DBSCAN neighborhood radius |
-| `minPts` | DBSCAN minimum number of samples |
-| `nAgg` | Number of Agglomerative clusters |
-
-The implementation also includes additional search mechanisms designed to improve exploration and exploitation during optimization:
-
-- Levy flight
-- Mutation
-- Local probing
-- Diversification
-- Restart strategy
-
-The optimization process evaluates clustering solutions using internal validation measures including:
-
-- **Silhouette Score**
-- **Davies-Bouldin Index**
-- **Calinski-Harabasz Index**
-
----
-
-## HHO Experimental Configurations
-
-Two HHO configurations are included in the implementation.
-
-### Smoke Run
-
-A smaller configuration used for initial experimentation and validation.
-
-| Parameter | Value |
-|---|---:|
-| Search sample | 400 observations |
-| Independent starts | 20 |
-| Population size | 50 |
-| Maximum iterations | 60 |
-
-### Full Run
-
-A larger configuration used for the main optimization experiment.
-
-| Parameter | Value |
-|---|---:|
-| Search sample | 400 observations |
-| Independent starts | 30 |
-| Population size | 80 |
-| Maximum iterations | 160 |
-
-Convergence traces and final fitness values from the independent HHO runs are recorded for analysis and visualization.
-
----
-
-## Weighted Ensemble Clustering
-
-After optimization, the partitions generated by:
-
-- K-Means
-- Agglomerative Clustering
-- DBSCAN
-
-are combined using a **weighted co-association matrix**.
-
-Rather than treating every clustering algorithm equally, the ensemble assigns weights according to the quality of the generated partitions.
-
-The weighting procedure uses:
-
-1. Clustering quality evaluation
-2. Quality-based weight calculation
-3. Softmax normalization
-4. Weighted co-association matrix construction
-5. Consensus clustering
-
-The final consensus partition is generated using **average-linkage hierarchical clustering**.
-
-Candidate cluster counts from **2 to 12** are evaluated using:
-
-- Silhouette Score
-- Davies-Bouldin Index
-- Calinski-Harabasz Index
-
----
-
-## Multi-Run Stability Analysis
-
-Because HHO is a stochastic metaheuristic algorithm, evaluating a single optimization run is not sufficient to assess the robustness of the solution.
-
-To investigate stability, HHO is independently executed across **20 random seeds**.
-
-Each HHO solution generates three optimized clustering partitions:
-
-```text
-K-Means-HHO
-Agglomerative-HHO
-DBSCAN-HHO
-```
-
-This process produces up to **60 candidate partitions**.
-
-The partitions are evaluated using both clustering-quality and agreement measures.
-
-### Clustering Quality Metrics
-
-- Silhouette Score
-- Davies-Bouldin Index
-- Calinski-Harabasz Index
-
-### Stability Metrics
-
-- Adjusted Rand Index (ARI)
-- Normalized Mutual Information (NMI)
-
-A weighted multi-run consensus partition is then constructed from the candidate solutions.
-
-The final multi-run solution is compared with the main ensemble to determine whether the discovered customer segmentation structure remains consistent across independent HHO executions.
-
----
-
-## Main Results
-
-The final clustering structure contains **six customer segments**.
-
-### Final Full-Data Clustering Performance
+Main full-data clustering results:
 
 | Metric | Result |
 |---|---:|
@@ -226,97 +148,123 @@ The final clustering structure contains **six customer segments**.
 | Calinski-Harabasz Index | **11588.44** |
 | DBSCAN noise ratio | **0%** |
 
-After HHO optimization, K-Means, Agglomerative Clustering, and DBSCAN produced highly consistent six-cluster partitions.
-
-The multi-run consensus analysis also reproduced the same final clustering structure with very high agreement relative to the main ensemble.
-
-These results indicate that the identified segmentation structure remains stable across independent optimization runs.
+The multi-run consensus analysis also reproduced the same final clustering structure with very high agreement with the main ensemble.
 
 ---
 
-## Reproducibility
+## Baseline vs. Proposed Method
 
-Harris Hawks Optimization is a **stochastic metaheuristic algorithm**.
+| Component | Baseline Article Replication | Proposed Thesis Method |
+|---|---|---|
+| Mixed-type dimensionality reduction | FAMD | FAMD |
+| K-Means | Yes | Yes |
+| Agglomerative clustering | Yes | Yes |
+| DBSCAN | No | Yes |
+| Metaheuristic optimization | No | **HHO** |
+| Hyperparameter optimization | Limited baseline configuration | **Joint HHO search** |
+| Ensemble clustering | No | **Yes** |
+| Partition weighting | No | **Quality-based weighting** |
+| Co-association consensus | No | **Yes** |
+| Multi-run stability analysis | No | **Yes** |
+| ARI / NMI analysis | No | **Yes** |
+| Main resulting structure | 4-cluster baseline | 6-cluster proposed solution |
 
-Therefore, small differences in the final HHO fitness value may occur across:
+> **Note:** The numerical results above belong to their respective analytical pipelines and experimental configurations. The repository keeps both implementations separate to make the methodological comparison transparent.
 
-- Independent executions
-- Random seeds
-- Software environments
-- Refactored or cleaned implementations
-
-The original thesis experiment reported a best HHO fitness value of approximately:
-
-```text
-5.771075
-```
+---
 
 ## Dataset
 
-The experiments use the publicly available:
+Both implementations use the publicly available:
 
 **Shopping Trends and Customer Behaviour Dataset**
 
-The dataset contains **3,900 customer records** and includes both numerical and categorical customer attributes.
+The dataset contains **3,900 customer records** with numerical and categorical attributes related to customer demographics, purchasing behaviour, and preferences.
 
-> **Note:** The dataset is not included directly in this repository.
-
-You can download the dataset from Kaggle:
+The dataset is available from Kaggle:
 
 [Download the Shopping Trends and Customer Behaviour Dataset](https://www.kaggle.com/datasets/sahilislam007/shopping-trends-and-customer-behaviour-dataset)
 
-After downloading the dataset, update the dataset path in the notebook before running the implementation.
+The dataset itself is not redistributed through this repository.
 
 ---
 
-## Dataset
+## Research Contribution
 
-The experiments use the publicly available:
-
-**Shopping Trends and Customer Behaviour Dataset**
-
-The dataset contains **3,900 customer records** and includes both numerical and categorical customer attributes.
-
-> **Note:** The dataset is not included directly in this repository.
-
-Users should download the dataset separately and update the dataset path in the notebook before running the implementation.
-
----
-
-## How to Run the Project
-
-1. Download the **Shopping Trends and Customer Behaviour Dataset**.
-2. Place the dataset in your preferred local directory.
-3. Update the dataset path inside the notebook.
-4. Install the required Python packages.
-5. Run the notebook cells sequentially.
-
----
-
-## Requirements
-
-The main Python packages used in this project include:
+The thesis investigates whether customer segmentation can be enhanced by moving beyond a single clustering algorithm and instead combining:
 
 ```text
-numpy
-pandas
-matplotlib
-scikit-learn
-scipy
-prince
+Mixed-Type Data Analysis
+        +
+Multiple Clustering Algorithms
+        +
+Metaheuristic Optimization
+        +
+Weighted Ensemble Clustering
+        +
+Consensus Clustering
+        +
+Stability Evaluation
 ```
+
+The proposed methodology uses **Harris Hawks Optimization** to search clustering parameters and subsequently integrates multiple optimized partitions through a weighted co-association framework.
+
+A multi-run analysis is additionally used to examine whether the discovered segmentation structure remains stable across independent optimization executions.
 
 ---
 
-## Research Context
+## Research Areas
 
-This project represents the main implementation developed for my thesis:
+This work lies at the intersection of:
+
+- Unsupervised Learning
+- Customer Segmentation
+- Clustering
+- Ensemble Clustering
+- Metaheuristic Optimization
+- Harris Hawks Optimization
+- Mixed-Type Data Analysis
+- Factor Analysis of Mixed Data
+- Consensus Clustering
+- Cluster Validation
+- Machine Learning
+- Data Mining
+- Reproducible Research
+
+---
+
+## Navigation
+
+### Baseline Implementation
+
+➡️ [1 — Baseline Article Replication](./1%28Baseline-Article-Replication%29/)
+
+Contains the baseline FAMD, K-Means, and Agglomerative clustering replication used as the reference methodology.
+
+### Proposed Thesis Implementation
+
+➡️ [2 — Proposed Thesis Method](./2%28Proposed-Thesis-Method%29/)
+
+Contains the proposed HHO-optimized weighted ensemble clustering framework and stability analysis.
+
+---
+
+## Thesis Context
+
+**Thesis Title**
 
 > **Improving Customer Segmentation Using Harris Hawks Optimization and Ensemble Clustering**
 
-The work focuses on the intersection of:
+The two implementations are intentionally separated to clearly distinguish:
 
-**Unsupervised Learning · Clustering · Ensemble Clustering · Metaheuristic Optimization · Customer Segmentation · Mixed-Type Data Analysis**
+```text
+What was reproduced from the baseline methodology
+                    │
+                    ▼
+What was extended in the proposed thesis methodology
+```
+
+This organization is intended to support **research transparency, reproducibility, and clear methodological comparison**.
 
 ---
 
@@ -324,12 +272,6 @@ The work focuses on the intersection of:
 
 **Sina**
 
-Research interests include:
+Research interests represented by this work include:
 
-- Unsupervised Learning
-- Clustering
-- Ensemble Clustering
-- Metaheuristic Optimization
-- Machine Learning
-- Data Mining
-- Intelligent Decision-Support Applications
+**Unsupervised Learning · Clustering · Ensemble Clustering · Metaheuristic Optimization · Machine Learning · Customer Analytics · Data Mining**
