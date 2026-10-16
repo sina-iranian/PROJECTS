@@ -1,0 +1,3 @@
+method,ARI_vs_known_labels,silhouette_score
+K-Means,0.7835692914154502,0.2597305
+Agglomerative,0.7687869654247758,0.24958257

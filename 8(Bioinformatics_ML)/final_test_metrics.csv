@@ -1,0 +1,5 @@
+,value
+chosen_model,Tuned Linear SVM
+test_accuracy,0.9937888198757764
+test_balanced_accuracy,0.9928571428571429
+test_macro_f1,0.994710743801653
